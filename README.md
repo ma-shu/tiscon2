@@ -102,7 +102,7 @@ tiscon2
 
       ├ META-INF                   #アプリケーションが公開する静的リソース
 
-      ├ net.unit8.sigcolle.dao   #Daoに対応するSQLファイル
+        ├ net.unit8.sigcolle.dao   #Daoに対応するSQLファイル
 
       ├ public                     #アプリケーションが公開する静的リソース
 

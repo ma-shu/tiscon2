@@ -104,13 +104,18 @@ public class CampaignController {
 
         // TODO タイトル, 目標人数を登録する
         Campaign model = builder(new Campaign())
+                .set(Campaign::setTitle, form.getTitle())
             .set(Campaign::setStatement, processor.markdownToHtml(form.getStatement()))
+            .set(Campaign::setGoal, Long.parseLong(form.getGoal()))
             .set(Campaign::setCreateUserId, principal.getUserId())
             .build();
         // TODO Databaseに登録する
+        CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
+        campaignDao.insert(model);
 
         // TODO 作成完了した旨のflashメッセージを画面に表示する
         return builder(redirect("/campaign/" + model.getCampaignId(), SEE_OTHER))
+                .set(HttpResponse::setFlash, new Flash("作成完了しました！"))
             .build();
     }
 
@@ -122,6 +127,10 @@ public class CampaignController {
      * @param session ログインしているユーザsession
      */
     public HttpResponse listCampaigns(Session session) {
+        //作成者がログインしているユーザと同じキャンペーンをリストにする
+        LoginUserPrincipal principal = (LoginUserPrincipal) session.get("principal");
+        CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
+        campaignDao.selectById(principal.getUserId());
         throw new UnsupportedOperationException("実装してください !!");
     }
 
