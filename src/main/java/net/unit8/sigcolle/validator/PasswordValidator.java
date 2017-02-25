@@ -17,7 +17,7 @@ import javax.validation.ConstraintValidatorContext;
  */
 public class PasswordValidator implements ConstraintValidator<Password, String> {
 
-    private static final Pattern PATTERN = Pattern.compile("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{4,}$");
+    private static final Pattern PATTERN = Pattern.compile("^(?=.*[0-9])(?=\\S+$).{4,}$");
 
     @Override
     public void initialize(Password password) {
