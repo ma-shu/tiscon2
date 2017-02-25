@@ -27,31 +27,33 @@ xmlns:th="http://www.thymeleaf.org">
                         <div class="statement" th:utext="${campaign.statement}" ></div>
                     </div>
                     <div class="six wide column">
-                        <h2>今すぐ賛同</h2>
-                        <p><span th:text="${signatureCount}">345</span>人の賛同</p>
+                        <h2>今すぐ賛同(Agree)</h2>
+                        <p><span th:text="${signatureCount}">345</span>人の賛同(Agree)</p>
                         <div class="ui red progress">
                             <div class="bar" th:style="${'width:' + (signatureCount * 100 / campaign.goal) + '%'}"></div>
                         </div>
+
                         <p><span th:text="${campaign.goal}">1000</span>人まで残り<span th:text="${campaign.goal - signatureCount}">1</span>人の賛同者が必要です！</p>
+                        <p><span th:text="${campaign.goal}">1000</span>the remainder<span th:text="${campaign.goal - signatureCount}">1</span>an assenter is necessary</p>
                         <form class="ui form" method="post" action="/campaign/1"
                               th:action="@{~/campaign/{id}(id=${campaign.campaignId})}"
                               th:classappend="${signature.hasErrors()} ? 'error'">
                             <div class="field" th:classappend="${signature.hasErrors('name')} ? 'error'">
-                                <input type="text" name="name" placeholder="氏名"
+                                <input type="text" name="name" placeholder="氏名(Name)"
                                        th:value="${session != null and session.principal != null} ? ${session.principal.userName} : ${signature.name}" />
                                 <ul class="ui pointing red basic label" th:if="${signature.hasErrors('name')}">
                                     <li th:each="message : ${signature.getErrors('name')}" th:text="${message}"></li>
                                 </ul>
                             </div>
                             <div class="field" th:classappend="${signature.hasErrors('signatureComment')} ? 'error'">
-                                <label>コメント(任意)</label>
-                                <textarea name="signatureComment" placeholder="コメント（任意）"
+                                <label>コメント(任意)(Comment)</label>
+                                <textarea name="signatureComment" placeholder="コメント（任意）(Comment)"
                                           th:value="${signature.signatureComment}"></textarea>
                                 <ul class="ui pointing red basic label" th:if="${signature.hasErrors('signatureComment')}">
                                     <li th:each="message : ${signature.getErrors('signatureComment')}" th:text="${message}"></li>
                                 </ul>
                             </div>
-                            <button class="ui fluid red button">賛同する</button>
+                            <button class="ui fluid red button">賛同する(Agree)</button>
                         </form>
                     </div>
                 </div>

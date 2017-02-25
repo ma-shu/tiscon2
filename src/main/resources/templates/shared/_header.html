@@ -7,29 +7,31 @@
          th:with="isLogin=((${session} != null) and (${session.principal} != null))">
         <a href="/" class="header item logo">SIG COLLE</a>
 
+        <A HREF="help/help.html" TARGET="_blank" >初めての方はこちら(Beginners here)</A>
+
         <div class="right menu">
             <div th:if="${isLogin}" class="ui link item dropdown">
-                <span class="text">キャンペーン</span>
+                <span class="text">Campaign</span>
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" href="/auth/campaign">新規作成</a>
+                    <a class="item" href="/auth/campaign">新規作成(Create New)</a>
                     <a class="item" th:href="'/auth/user/campaigns'">
-                        作成したキャンペーン一覧
+                        作成したキャンペーン一覧(Campaign List)
                     </a>
                 </div>
             </div>
 
-            <a th:unless="${isLogin}" href="/register" class="item">ユーザ登録</a>
-            <a th:unless="${isLogin}" href="/login" class="item">ログイン</a>
+            <a th:unless="${isLogin}" href="/register" class="item">ユーザ登録(user registration)</a>
+            <a th:unless="${isLogin}" href="/login" class="item">ログイン(Login)</a>
 
             <div th:if="${isLogin}" class="ui link item dropdown">
                 <span th:text="${session.principal.userName}">name</span> さん
                 <i class="dropdown icon"></i>
                 <div class="menu">
-                    <a class="item" href="#">ユーザ情報変更</a>
+                    <a class="item" href="#">ユーザ情報変更(User information change)</a>
                 </div>
             </div>
-            <a th:if="${isLogin}" href="/logout" class="item">ログアウト</a>
+            <a th:if="${isLogin}" href="/logout" class="item">logout</a>
         </div>
 
     </div>

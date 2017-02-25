@@ -17,7 +17,8 @@
             </div>
             <div class="ui information container center aligned ">
                 <h1 class="ui header">SIG COLLE</h1>
-                <h2>キャンペーン一覧(Campaign List)</h2>
+                <h2>①左上のログインボタンをクリック！！
+                　　Click the left upper Sign In button！！</h2>
                 <div th:each="campaign : ${campaigns}">
                     <a class="campaigns" th:href="'/campaign/'+${campaign.campaignId}" th:text="${campaign.title}">title</a>
                 </div>
