@@ -30,9 +30,12 @@ xmlns:th="http://www.thymeleaf.org">
                         <h2>今すぐ賛同(Agree)</h2>
                         <p><span th:text="${signatureCount}">345</span>人の賛同(Agree)</p>
                         <div class="ui red progress">
-                            <div class="bar" th:style="${'width:' + (signatureCount * 100 / campaign.goal) + '%'}"></div>
+                            <div class="bar" th:style="${'width:' + (signatureCount * 100 / campaign.goal) + '%'}">
                         </div>
 
+                            <div class="ui blue progress">
+                                <div class="bar" th:style="${'width:' + (signatureCount * 100 / campaign.goal) + '%'}">
+                                </div>
                         <p><span th:text="${campaign.goal}">1000</span>人まで残り<span th:text="${campaign.goal - signatureCount}">1</span>人の賛同者が必要です！</p>
                         <p><span th:text="${campaign.goal}">1000</span>the remainder<span th:text="${campaign.goal - signatureCount}">1</span>an assenter is necessary</p>
                         <form class="ui form" method="post" action="/campaign/1"
@@ -54,6 +57,7 @@ xmlns:th="http://www.thymeleaf.org">
                                 </ul>
                             </div>
                             <button class="ui fluid red button">賛同する(Agree)</button>
+                            <button class="ui fluid blue button">否定する(Disagree)</button>
                         </form>
                     </div>
                 </div>
