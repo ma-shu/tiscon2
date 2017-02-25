@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Signature Collection</title>
+    <link href="http://fonts.googleapis.com/css?family=Exo:900" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/semantic-ui/2.2.6/semantic.min.css" rel="stylesheet"/>
+    <link href="/css/main.css" rel="stylesheet"/>
+</head>
+<body>
+<div class="pusher">
+    <div th:replace="/shared/_header::header"></div>
+
+    <div class="full height image">
+        <div class="ui main container">
+            <div class="menu bar">
+            </div>
+            <div class="ui information container center aligned ">
+                <h1 class="ui header">SIG COLLE</h1>
+                <h2>あなたが作成したキャンペーン一覧</h2>
+                <div th:each="campaign : ${campaigns}">
+                    <a class="campaigns" th:href="'/campaign/'+${campaign.campaignId}" th:text="${campaign.title}">title</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

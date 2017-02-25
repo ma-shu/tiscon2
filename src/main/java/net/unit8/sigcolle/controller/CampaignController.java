@@ -1,5 +1,6 @@
 package net.unit8.sigcolle.controller;
 
+import enkan.collection.Multimap;
 import enkan.component.doma2.DomaProvider;
 import enkan.data.Flash;
 import enkan.data.HttpResponse;
@@ -16,6 +17,9 @@ import net.unit8.sigcolle.model.Signature;
 import net.unit8.sigcolle.model.UserCampaign;
 import org.pegdown.Extensions;
 import org.pegdown.PegDownProcessor;
+
+import java.sql.SQLException;
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.transaction.Transactional;
@@ -34,6 +38,8 @@ public class CampaignController {
 
     @Inject
     private DomaProvider domaProvider;
+
+    //private static final String ALREADY_SIGN = "あなたはすでに賛同済みです！";
 
     /**
      * キャンペーン詳細画面表示.
@@ -63,12 +69,26 @@ public class CampaignController {
         if (form.hasErrors()) {
             return showCampaign(form.getCampaignIdLong(), form, null);
         }
+
+        SignatureDao signatureDao = domaProvider.getDao(SignatureDao.class);
+        if (signatureDao.countByNameAndCampaignId(form.getName(), form.getCampaignIdLong()) != 0) {
+            //form.setErrors(Multimap.of("name", ALREADY_SIGN));
+            CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
+            //UserCampaign campaign = campaignDao.selectById(form.getCampaignIdLong());
+            /*return templateEngine.render("campaign/index",
+                    "campaign", campaign
+            );*/
+            return builder(redirect("/campaign/" + form.getCampaignId(), SEE_OTHER))
+                    .set(HttpResponse::setFlash, new Flash("あなたはすでに賛同済みです！"))
+                    .build();
+        }
+
         Signature signature = builder(new Signature())
                 .set(Signature::setCampaignId, form.getCampaignIdLong())
                 .set(Signature::setName, form.getName())
                 .set(Signature::setSignatureComment, form.getSignatureComment())
                 .build();
-        SignatureDao signatureDao = domaProvider.getDao(SignatureDao.class);
+        //SignatureDao signatureDao = domaProvider.getDao(SignatureDao.class);
         signatureDao.insert(signature);
 
         return builder(redirect("/campaign/" + form.getCampaignId(), SEE_OTHER))
@@ -127,11 +147,21 @@ public class CampaignController {
      * @param session ログインしているユーザsession
      */
     public HttpResponse listCampaigns(Session session) {
-        //作成者がログインしているユーザと同じキャンペーンをリストにする
+        //作成者がログインしているuser_idと同じcreate_user_idを持つキャンペーンを抽出
         LoginUserPrincipal principal = (LoginUserPrincipal) session.get("principal");
         CampaignDao campaignDao = domaProvider.getDao(CampaignDao.class);
-        campaignDao.selectById(principal.getUserId());
-        throw new UnsupportedOperationException("実装してください !!");
+
+        List<Campaign> campaignList = campaignDao.selectByCreateUserId(principal.getUserId());
+        return templateEngine.render("index2makedcam", "campaigns", campaignList);
+
+        //return templateEngine.render("index2makedcam");
+
+        /*if(campaignList.size() == 0){
+            return templateEngine.render("index", "campaigns", campaignDao.selectAll());
+                    //.set(HttpResponse::setFlash, new Flash("まだ作成していません！"));
+        }*/
+
+        //throw new UnsupportedOperationException("実装してください !!");
     }
 
     private HttpResponse showCampaign(Long campaignId,
